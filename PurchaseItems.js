@@ -1,3 +1,5 @@
+var SPLSS = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty('splSsId'));
+
 function newPurchaseItem(formObj){
   var test, itemObj, nextItemId;
   
@@ -19,7 +21,9 @@ function newPurchaseItem(formObj){
 
 
 
-function getPurchaseItem(){
+function getPurchaseItem(itemId){
+  var test;
+  
   
 }
 
@@ -38,20 +42,26 @@ function removePurchaseItem(){
 
 
 function writePurchaseItem(item){
-  Logger.log(item);
+  var test, data, splSheet, range;
+  
+  data = [item];
+  splSheet = SPLSS.getSheetByName('Standard Items');
+  range = splSheet.getRange(1,1,1,splSheet.getLastColumn());
+  NVSL.setRowsData(splSheet, data, range, splSheet.getLastRow()+1);
 }
 
 
 
 function testFunc(){
   var formObj = {
-    item: 'widget',
+    item: 'widget2',
     desc: 'This is a description of the widget',
     vendor: 'ACME',
     partNo: 'AC123',
-    price: 60,
+    price: 99,
     notes: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque aliquet euismod malesuada. Nullam imperdiet odio eu nisi imperdiet viverra at ac metus.'
   }
   
   newPurchaseItem(formObj);
+  debugger;
 }
