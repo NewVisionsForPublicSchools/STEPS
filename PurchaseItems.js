@@ -24,7 +24,12 @@ function newPurchaseItem(formObj){
 function getPurchaseItem(itemId){
   var test;
   
-  
+  splSheet = SPLSS.getSheetByName('Standard Items');
+  standardItems = NVSL.getRowsData(splSheet);
+  item = standardItems.filter(function (e){
+    return e.itemId == itemId;
+  })[0];
+  return item;
 }
 
 
@@ -53,15 +58,18 @@ function writePurchaseItem(item){
 
 
 function testFunc(){
-  var formObj = {
-    item: 'widget2',
-    desc: 'This is a description of the widget',
-    vendor: 'ACME',
-    partNo: 'AC123',
-    price: 99,
-    notes: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque aliquet euismod malesuada. Nullam imperdiet odio eu nisi imperdiet viverra at ac metus.'
-  }
+//  var formObj = {
+//    item: 'thingamabob3',
+//    desc: 'This is a description of the widget',
+//    vendor: 'ACME',
+//    partNo: 'AC123',
+//    price: 66,
+//    notes: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque aliquet euismod malesuada. Nullam imperdiet odio eu nisi imperdiet viverra at ac metus.'
+//  }
+//  
+//  newPurchaseItem(formObj);
   
-  newPurchaseItem(formObj);
+  var itemId = 11;
+  var item = getPurchaseItem(itemId);
   debugger;
 }
