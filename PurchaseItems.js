@@ -21,6 +21,20 @@ function newPurchaseItem(formObj){
 
 
 
+function getAllPurchaseItems(){
+  var test, splSheet, standardItems, html;
+  
+  splSheet = SPLSS.getSheetByName('Standard Items');
+  standardItems = NVSL.getRowsData(splSheet);
+  sortByKey(standardItems, 'item');
+  
+  html = HtmlService.createTemplateFromFile('purchase_item');
+  html.data = standardItems;
+  return html.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).getContent();
+}
+
+
+
 function getPurchaseItem(itemId){
   var test;
   
@@ -34,8 +48,10 @@ function getPurchaseItem(itemId){
 
 
 
-function updatePurchaseItem(){
+function updatePurchaseItem(itemId){
+  var test;
   
+  item = getPurchaseItem(itemId);
 }
 
 

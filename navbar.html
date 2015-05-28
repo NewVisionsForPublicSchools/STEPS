@@ -14,7 +14,8 @@
 
         <div class="navbar-right">
           <button type="button" class="btn btn-default navbar-btn" id="homeButton">Home</button>
-          <button type="button" class="btn btn-default navbar-btn" id="spiButton">Standard Purchase Items</button>
+          <button type="button" class="btn btn-default navbar-btn" id="spiButton"
+          onclick="google.script.run.withSuccessHandler(loadSpi).getAllPurchaseItems()">Standard Purchase Items</button>
           <!-- <button type="button" class="btn btn-default navbar-btn" id="reportButton">Reporting</button> -->
           <!-- <button type="button" class="btn btn-default navbar-btn" id="adminButton">Admin</button> -->
         </div>
@@ -28,35 +29,21 @@
 
 
 <script>
-$('#spiButton').click(loadSpi);
 $('#homeButton').click(loadHome);
-//$('#reportButton').click(loadReporting);
-//$('#adminButton').click(loadAdmin);
 
-function loadSpi(){
+function loadSpi(resultHtml){
   $('#home').addClass("hidden");
-//  $('#reportPage').addClass("hidden");
-  $('#spiPage').removeClass("hidden");
-//  $('#reportButton').removeClass("active");
-  $('#homeButton').removeClass("active");
   $('#spiButton').addClass("active");
+  $('#homeButton').removeClass("active");
+  var outputDiv = document.getElementById('itemResult');
+  outputDiv.innerHTML = resultHtml;
 }
 
 function loadHome(){
   $('#spiPage').addClass("hidden");
-//  $('#reportPage').addClass("hidden");
   $('#home').removeClass("hidden");
   $('#spiButton').removeClass("active");
-//  $('#reportButton').removeClass("active");
   $('#homeButton').addClass("active");
 }
 
-//function loadReporting(){
-//  $('#home').addClass("hidden");
-//  $('#spiPage').addClass("hidden");
-//  $('#reportPage').removeClass("hidden");
-//  $('#homeButton').removeClass("active");
-//  $('#spiButton').removeClass("active");
-//  $('#reportButton').addClass("active");
-//}
 </script>
