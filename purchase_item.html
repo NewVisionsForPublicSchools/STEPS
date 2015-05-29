@@ -1,0 +1,34 @@
+<div class="container-fluid" id="spiPage">
+
+  <div class="col-md-4">
+    <ul class="list-group">
+      <li class="list-group-item">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Filter Items...">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-filter" aria-hidden="true">
+              </span></button>
+            </span>
+          </div><!-- /input-group -->
+      </li>
+      <? for(var i=0;i<data.length;i++){ ?>
+        <li class="list-group-item">
+          <span class="pull-right"><button type="button" class="btn btn-primary" id="detailBtn" value="<?= data[i].itemId ?>"
+          onclick="google.script.run.withSuccessHandler(updateDetail).displayPurchaseItem(this.value)">
+          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button></span>
+          <h4 class="list-group-item-heading"><?= data[i].item ?></h4>
+          <p class="list-group-item-text"><?= data[i].description ?></p>
+        </li>
+      <? } ?>
+    </ul>
+  </div>
+
+  <div id="detailResult"></div>
+  
+</div>
+
+
+
+<script>
+
+</script>
