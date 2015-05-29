@@ -116,3 +116,49 @@ function sortByKey(array, key) {
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
 }
+
+
+
+function seedStandardPurchaseList(){
+  var test, ss, sheet, data, seeds, i, destSs, destSheet, range, formObj, itemObj, nextId;
+  
+  ss = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty('purchaseListSeedId'));
+  sheet = ss.getSheetByName('Sheet1');
+  data = NVSL.getRowsData(sheet);
+  destSs = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty('splSsId'));
+  destSheet = destSs.getSheetByName('Standard Items');
+  range = destSheet.getRange(2,1,destSheet.getLastRow(),destSheet.getLastColumn());
+
+  seeds = data.map(function (e){
+    var x = {
+      item: e.standard,
+      desc: e.itemDescription,
+      loc: e.forWhichLocation,
+      vendor: e.vendor,
+      partNo: e.vendorPartNumber,
+      price: e.lastQuotedPrice,
+      notes: e.notes
+    };
+    return x;
+  });
+  
+  range.clearContent();
+  nextId = Number(PropertiesService.getScriptProperties().getProperty('nextItemId'));
+  for(i=0;i<seeds.length;i++){
+    formObj = seeds[i];
+    itemObj = {
+             item: formObj.item,
+             description: formObj.desc,
+             location: formObj.loc,
+             vendor: formObj.vendor,
+             partNumber: formObj.partNo,
+             price: formObj.price,
+             notes: formObj.notes,
+             itemId: nextId + i,
+             lastUpdated: new Date()
+            };
+    writePurchaseItem(itemObj);
+  }
+  PropertiesService.getScriptProperties().setProperty('nextItemId', nextId + i);
+  debugger;
+}
