@@ -52,6 +52,101 @@
   </div>
 </div>
 
+<!-- Item Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+     
+     <form class="form-horizontal" method="POST" action="/contacts/{{contact.id}}" data-pjax="#main">
+       
+       <div class="modal-header">
+         
+         <div class="btn-group pull-left">
+           <button class="btn btn-danger" data-dismiss="modal">
+             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+           </button>
+         </div>
+         
+         <div class="btn-group pull-right">
+           <button class="btn btn-success" data-dismiss="modal">
+             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+           </button>
+         </div>
+         
+         <h4 class="modal-title text-center">
+             Edit Item
+         </h4>
+       </div> <!-- modal header -->
+         
+         <div class="modal-body">
+           <input type="hidden" name="spiId" value="<?= data.itemId ?>">
+           <input type="hidden" name="_method" value="put">
+           <div class="form-group">
+             <label class="col-md-4 control-label">Item</label>
+             <div class="col-md-8">
+               <input type="text" name="itemName" class="form-control" placeholder="Item"
+               value="<?= data.item ?>">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="col-md-4 control-label">Description</label>
+             <div class="col-md-8">
+               <input type="text" name="itemDesc" class="form-control" placeholder="Description"
+               value="<?= data.description ?>">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="col-md-4 control-label">Location</label>
+             <div class="col-md-8">
+               <input type="text" name="itemLoc" class="form-control" placeholder="Location"
+               value="<?= data.location ?>">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="col-md-4 control-label">Vendor</label>
+             <div class="col-md-8">
+               <input type="text" name="itemVendor" class="form-control" placeholder="Vendor"
+               value="<?= data.vendor ?>">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="col-md-4 control-label">Part Number</label>
+             <div class="col-md-8">
+               <input type="text" name="partNum" class="form-control" placeholder="Part Number"
+               value="<?= data.partNumber ?>">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="col-md-4 control-label">Price</label>
+             <div class="col-md-8">
+               <input type="text" name="itemPrice" class="form-control" placeholder="Price"
+               value="<?= data.price ?>">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="col-md-4 control-label">Notes</label>
+             <div class="col-md-8">
+               <input type="text" name="itemNotes" class="form-control" placeholder="Notes"
+               value="<?= data.notes ?>">
+             </div>
+           
+         </div> <!-- modal body -->
+          
+       </div>
+       
+     </form>
+     
+     <div class="modal-footer">
+       <button type="button" class="btn btn-danger btn-block"
+         onclick="bootcards.confirmDelete('contact'); return false;">
+         <span class="glyphicon glyphicon-trash"></span>
+       </button>   
+     </div>
+     
+    </div> <!-- modal content -->
+  </div>
+</div> <!-- modal -->
+
 
 
 <script>
