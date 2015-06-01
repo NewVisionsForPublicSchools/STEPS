@@ -162,3 +162,16 @@ function seedStandardPurchaseList(){
   PropertiesService.getScriptProperties().setProperty('nextItemId', nextId + i);
   debugger;
 }
+
+
+
+function searchStringInArray (str, strArray) {
+  var results = [];
+  for (var j=0; j<strArray.length; j++) {
+    if (strArray[j].match(str)){
+      results.push(j);
+    }   
+  }
+  var matches = results.length > 0 ? results : -1;
+  return matches;
+}
