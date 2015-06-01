@@ -17,7 +17,8 @@
           onclick="google.script.run.withSuccessHandler(updateDetail).displayPurchaseItem(this.value)">
           <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button></span>
           <h4 class="list-group-item-heading"><?= data[i].item ?></h4>
-          <p class="list-group-item-text"><?= data[i].description ?></p>
+          <p class="list-group-item-heading"><?= data[i].description ?></p>
+          <p class="list-group-item-text"><small><?= data[i].location ?></small></p>
         </li>
       <? } ?>
     </ul>
