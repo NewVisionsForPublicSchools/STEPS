@@ -33,4 +33,8 @@
     outputDiv.innerHTML = resultHtml;
     window.scrollTo(0,0);
   }
+  
+  function updatePurchaseList(resultHtml){   
+    google.script.run.withSuccessHandler(loadSpi).getAllPurchaseItems()
+  }
 </script>

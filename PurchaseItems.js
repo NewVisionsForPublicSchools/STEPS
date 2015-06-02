@@ -69,13 +69,21 @@ function editPurchaseItem(formObj){
   headers = sheet.getRange(1,2,1,sheet.getLastColumn());
   row = getItemRow(itemId);
   objects = [item];
-  NVSL.setRowsData(sheet, objects, headers, row)
+  
+  if(row){
+    NVSL.setRowsData(sheet, objects, headers, row)
+  }
 }
 
 
 
-function removePurchaseItem(){
+function removePurchaseItem(formObj){
+  var test, itemId, recordRow, sheet;
   
+  itemId = Number(formObj.spiId);
+  recordRow = getItemRow(itemId);
+  sheet = SPLSS.getSheetByName('Standard Items');
+  sheet.deleteRow(recordRow);
 }
 
 
@@ -112,7 +120,7 @@ function getItemRow(itemId){
     return e.itemId;
   });
   
-  row = data.indexOf(itemId) + 2;
+  row = data.indexOf(itemId) >= 0 ? (data.indexOf(itemId) + 2) : "";
   return row;
 }
 

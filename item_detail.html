@@ -69,7 +69,7 @@
          
          <div class="btn-group pull-right">
            <button class="btn btn-success" data-dismiss="modal"
-           onclick="google.script.run.editPurchaseItem($('#editForm').get(0))">
+           onclick="google.script.run.withSuccessHandler(updatePurchaseList).editPurchaseItem($('#editForm').get(0))">
              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
            </button>
          </div>
@@ -138,8 +138,8 @@
      </form>
      
      <div class="modal-footer">
-       <button type="button" class="btn btn-danger btn-block"
-         onclick="bootcards.confirmDelete('contact'); return false;">
+       <button type="button" class="btn btn-danger btn-block" data-dismiss="modal"
+         onclick="google.script.run.withSuccessHandler(updatePurchaseList).removePurchaseItem($('#editForm').get(0))">
          <span class="glyphicon glyphicon-trash"></span>
        </button>   
      </div>
