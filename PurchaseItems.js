@@ -2,14 +2,14 @@ var SPLSS = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getP
 
 function newPurchaseItem(formObj){
   var test, itemObj, nextItemId;
-  
-  itemObj = {item: formObj.item,
-             description: formObj.desc,
-             location: formObj.loc,
-             vendor: formObj.vendor,
-             partNumber: formObj.partNo,
-             price: formObj.price,
-             notes: formObj.notes,
+
+  itemObj = {item: formObj.itemName,
+             description: formObj.itemDesc,
+             location: formObj.itemLoc,
+             vendor: formObj.itemVendor,
+             partNumber: formObj.partNum,
+             price: formObj.itemPrice,
+             notes: formObj.itemNotes,
              itemId: PropertiesService.getScriptProperties().getProperty('nextItemId'),
              lastUpdated: new Date()
             };

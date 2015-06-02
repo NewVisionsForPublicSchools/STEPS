@@ -2,15 +2,33 @@
 
   <div class="col-md-4">
     <ul class="list-group">
-      <li class="list-group-item">
+      <div class="list-group-item">
+        <div class="btn-group pull-left">
+         <button class="btn btn-warning" id="refreshListBtn" onclick="updatePurchaseList()">
+           <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+         </button>
+       </div>
+       
+       <div class="btn-group pull-right">
+         <button class="btn btn-primary" id="newItemBtn" data-toggle="modal" data-target="#newModal">
+           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+         </button>
+       </div>
+       
+       <h3 class="text-center text-primary">
+           Standard Purchase List
+       </h3>
+      </div>
+      <!-- <div class="list-group-item">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Filter Items...">
+            <input type="text" class="form-control" placeholder="Filter Items..." id="filterQuery" name="filterQuery">
             <span class="input-group-btn">
-              <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-filter" aria-hidden="true">
+              <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-filter" id="filterBtn" 
+              aria-hidden="true">
               </span></button>
             </span>
-          </div><!-- /input-group -->
-      </li>
+          </div><!-- /input-group
+      </div> -->
       <? for(var i=0;i<data.length;i++){ ?>
         <li class="list-group-item">
           <span class="pull-right"><button type="button" class="btn btn-primary" id="detailBtn" value="<?= data[i].itemId ?>"
@@ -27,6 +45,84 @@
   <div id="detailResult"></div>
   
 </div>
+
+<!-- new item modal -->
+<div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="newModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+      <form class="form-horizontal" method="get" id="newForm">
+        
+        <div class="modal-header">
+          <div class="btn-group pull-left">
+            <button class="btn btn-danger" data-dismiss="modal">
+              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </button>
+          </div>
+           
+          <div class="btn-group pull-right">
+            <button class="btn btn-success" data-dismiss="modal" id="saveNewItem"
+            onclick="google.script.run.withSuccessHandler(updatePurchaseList).newPurchaseItem($('#newForm').get(0))">
+              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            </button>
+          </div>
+           
+          <h4 class="modal-title text-center">
+             New Purchase Item
+          </h4>
+        </div> <!-- modal header -->
+        
+        <div class="modal-body">
+           <input type="hidden" name="_method" value="put">
+           <div class="form-group">
+             <label class="col-md-4 control-label">Item</label>
+             <div class="col-md-8">
+               <input type="text" name="itemName" class="form-control" placeholder="Item">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="col-md-4 control-label">Description</label>
+             <div class="col-md-8">
+               <input type="text" name="itemDesc" class="form-control" placeholder="Description">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="col-md-4 control-label">Location</label>
+             <div class="col-md-8">
+               <input type="text" name="itemLoc" class="form-control" placeholder="Location">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="col-md-4 control-label">Vendor</label>
+             <div class="col-md-8">
+               <input type="text" name="itemVendor" class="form-control" placeholder="Vendor">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="col-md-4 control-label">Part Number</label>
+             <div class="col-md-8">
+               <input type="text" name="partNum" class="form-control" placeholder="Part Number">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="col-md-4 control-label">Price</label>
+             <div class="col-md-8">
+               <input type="text" name="itemPrice" class="form-control" placeholder="Price">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="col-md-4 control-label">Notes</label>
+             <div class="col-md-8">
+               <input type="text" name="itemNotes" class="form-control" placeholder="Notes">
+             </div>
+           </div>
+         </div> <!-- modal body -->
+        
+      </form>
+      
+    </div>
+  </div> <!-- modal dialog -->
+</div> <!-- modal -->
 
 
 
