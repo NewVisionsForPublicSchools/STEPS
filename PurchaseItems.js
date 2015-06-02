@@ -5,6 +5,7 @@ function newPurchaseItem(formObj){
   
   itemObj = {item: formObj.item,
              description: formObj.desc,
+             location: formObj.loc,
              vendor: formObj.vendor,
              partNumber: formObj.partNo,
              price: formObj.price,
@@ -48,10 +49,27 @@ function getPurchaseItem(itemId){
 
 
 
-function updatePurchaseItem(itemId){
-  var test;
+function editPurchaseItem(formObj){
+  var test, item, itemId, sheet, headers, row, objects;
   
-  item = getPurchaseItem(itemId);
+  Logger.log("Hello World");
+  item = {
+    item: formObj.itemName,
+    description: formObj.itemDesc,
+    location: formObj.itemLoc, 
+    vendor: formObj.itemVendor,
+    partNumber: formObj.partNum,
+    price: formObj.itemPrice,
+    notes: formObj.itemNotes,
+    lastUpdated: new Date()
+  };
+  
+  itemId = Number(formObj.spiId);
+  sheet = SPLSS.getSheetByName('Standard Items');
+  headers = sheet.getRange(1,2,1,sheet.getLastColumn());
+  row = getItemRow(itemId);
+  objects = [item];
+  NVSL.setRowsData(sheet, objects, headers, row)
 }
 
 
@@ -73,6 +91,33 @@ function writePurchaseItem(item){
 
 
 
+function displayPurchaseItem(itemId){
+  var test, item, html;
+  
+  item = getPurchaseItem(itemId);
+  
+  html = HtmlService.createTemplateFromFile('item_detail');
+  html.data = item;
+  return html.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).getContent();
+}
+
+
+
+function getItemRow(itemId){
+  var test, ss, sheet, data, row;
+  
+  ss = SPLSS;
+  sheet = ss.getSheetByName('Standard Items');
+  data = NVSL.getRowsData(sheet).map(function (e){
+    return e.itemId;
+  });
+  
+  row = data.indexOf(itemId) + 2;
+  return row;
+}
+
+
+
 function testFunc(){
 //  var formObj = {
 //    item: 'thingamabob3',
@@ -84,8 +129,7 @@ function testFunc(){
 //  }
 //  
 //  newPurchaseItem(formObj);
-  
-  var itemId = 11;
-  var item = getPurchaseItem(itemId);
+  var itemId = 42;
+  var row = getItemRow(itemId);
   debugger;
 }

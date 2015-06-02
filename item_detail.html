@@ -57,7 +57,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
      
-     <form class="form-horizontal" method="POST" action="/contacts/{{contact.id}}" data-pjax="#main">
+     <form class="form-horizontal" method="get" id="editForm">
        
        <div class="modal-header">
          
@@ -68,7 +68,8 @@
          </div>
          
          <div class="btn-group pull-right">
-           <button class="btn btn-success" data-dismiss="modal">
+           <button class="btn btn-success" data-dismiss="modal"
+           onclick="google.script.run.editPurchaseItem($('#editForm').get(0))">
              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
            </button>
          </div>
