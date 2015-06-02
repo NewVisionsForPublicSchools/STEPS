@@ -131,7 +131,7 @@ function seedStandardPurchaseList(){
 
   seeds = data.map(function (e){
     var x = {
-      item: e.standard,
+      item: e.standard.trim(),
       desc: e.itemDescription,
       loc: e.forWhichLocation,
       vendor: e.vendor,
