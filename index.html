@@ -27,11 +27,16 @@
 
 
 
-<script>
+<script>    
   function updateDetail(resultHtml){
     var outputDiv = document.getElementById('detailResult');
     outputDiv.innerHTML = resultHtml;
     window.scrollTo(0,0);
+  }
+  
+  function updateCart(resultHtml){
+    var outputDiv = document.getElementById('cartResult');
+    outputDiv.innerHTML = resultHtml;
   }
   
   function updatePurchaseList(resultHtml){   

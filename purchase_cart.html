@@ -1,0 +1,48 @@
+<div class="col-md-4" id="cart">
+  <ul class="list-group">
+    <div class="list-group-item">
+      <div class="pull-left">
+       <button class="btn btn-warning" id="refreshListBtn" title="Refresh Cart"
+       onclick="google.script.run.withSuccessHandler(updateCart).addToCart()">
+         <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+       </button>
+       <button class="btn btn-danger" id="clearCartBtn" onclick="google.script.run.withSuccessHandler(updateCart).clearCart()"
+       title="Clear Cart">
+         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+       </button>
+      </div>
+      <div class="btn-group pull-right">
+        <button class="btn btn-primary" id="createPOBtn" title="Create PO From Cart">
+          <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+        </button>
+      </div>
+     
+     <h3 class="text-center text-primary">
+         Purchase Cart
+     </h3>
+    </div>
+    
+    <form class="form-inline" id="cartForm">
+    <? for(var i=0;i<data.length;i++){ ?>
+      <li class="list-group-item">
+        <input type="hidden" name="cartId" value="<?= data[i].cartId ?>">
+        <span class="pull-right"><button type="button" class="btn btn-danger" id="removeCartBtn" value="<?= data[i].cartId?>"
+        title="Remove From Cart" onclick="google.script.run.withSuccessHandler(updateCart).removeFromCart(this.value)">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></span>
+        <h4 class="list-group-item-heading"><?= data[i].item ?></h4>
+        <p class="list-group-item-heading">$<?= data[i].price.toFixed(2) ?></p>
+        <div class="form-group">
+          <label for="<?= data[i].itemId ?>Qty">Qty.</label>
+          <input type="number" class="form-control qty" id="<?= data[i].itemId ?>Qty" min="0" value="<?= data[i].qty ?>">
+        </div>
+      </li>
+    <? } ?>
+    </form>
+  </ul>
+</div>
+
+
+
+<script>
+
+</script>

@@ -4,13 +4,13 @@
     <ul class="list-group">
       <div class="list-group-item">
         <div class="btn-group pull-left">
-         <button class="btn btn-warning" id="refreshListBtn" onclick="updatePurchaseList()">
+         <button class="btn btn-warning" id="refreshListBtn" title="Refresh Purchase List" onclick="updatePurchaseList()">
            <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
          </button>
        </div>
        
        <div class="btn-group pull-right">
-         <button class="btn btn-primary" id="newItemBtn" data-toggle="modal" data-target="#newModal">
+         <button class="btn btn-primary" id="newItemBtn" data-toggle="modal" data-target="#newModal" title="Add New Item">
            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
          </button>
        </div>
@@ -31,18 +31,27 @@
       </div> -->
       <? for(var i=0;i<data.length;i++){ ?>
         <li class="list-group-item">
-          <span class="pull-right"><button type="button" class="btn btn-primary" id="detailBtn" value="<?= data[i].itemId ?>"
-          onclick="google.script.run.withSuccessHandler(updateDetail).displayPurchaseItem(this.value)">
-          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button></span>
+          <span class="pull-right"><button type="button" class="btn btn-default" id="detailBtn" value="<?= data[i].itemId ?>"
+          title="View Detail" onclick="google.script.run.withSuccessHandler(updateDetail).displayPurchaseItem(this.value)">
+          <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></button></span>
           <h4 class="list-group-item-heading"><?= data[i].item ?></h4>
           <p class="list-group-item-heading"><?= data[i].description ?></p>
+          <span class="pull-right"><button type="button" class="btn btn-primary" id="cartBtn" value="<?= data[i].itemId ?>"
+          title="Add To Cart" onclick="google.script.run.withSuccessHandler(updateCart).addToCart(this.value)">
+          <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></button></span>
           <p class="list-group-item-text"><small><?= data[i].location ?></small></p>
+          <br>
         </li>
       <? } ?>
     </ul>
   </div>
 
   <div id="detailResult"></div>
+  
+  <div id="cartResult"><button type="button" class="btn btn-primary" id="showCart"
+  onclick="google.script.run.withSuccessHandler(updateCart).addToCart()">
+    View Cart
+  </button></div>
   
 </div>
 
@@ -122,6 +131,29 @@
       
     </div>
   </div> <!-- modal dialog -->
+</div> <!-- modal -->
+
+<!-- add to cart modal -->
+<div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="cartModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+      <form class="form-horizontal" method="get" id="newForm">
+        
+        <div class="modal-header">
+          <h4 class="modal-title text-center">
+             Add Item to Cart
+          </h4>
+        </div> <!-- modal header -->
+        
+        <div class="modal-body">
+          <?= data[i] ?>
+        </div>
+        
+      </form>
+      
+    </div> <!-- modal-content -->
+  </div>  <!-- modal dialog -->
 </div> <!-- modal -->
 
 

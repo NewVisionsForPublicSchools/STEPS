@@ -1,3 +1,4 @@
+
 var SPLSS = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty('splSsId'));
 
 function newPurchaseItem(formObj){
@@ -8,7 +9,7 @@ function newPurchaseItem(formObj){
              location: formObj.itemLoc,
              vendor: formObj.itemVendor,
              partNumber: formObj.partNum,
-             price: formObj.itemPrice,
+             price: formObj.itemPrice.toFixed(2),
              notes: formObj.itemNotes,
              itemId: PropertiesService.getScriptProperties().getProperty('nextItemId'),
              lastUpdated: new Date()
@@ -81,8 +82,8 @@ function removePurchaseItem(formObj){
   var test, itemId, recordRow, sheet;
   
   itemId = Number(formObj.spiId);
-  recordRow = getItemRow(itemId);
   sheet = SPLSS.getSheetByName('Standard Items');
+  recordRow = getItemRow(itemId, sheet);
   sheet.deleteRow(recordRow);
 }
 
@@ -111,17 +112,85 @@ function displayPurchaseItem(itemId){
 
 
 
-function getItemRow(itemId){
-  var test, ss, sheet, data, row;
+function getItemRow(itemId, sheet){
+  var test, ss, data, row;
   
-  ss = SPLSS;
-  sheet = ss.getSheetByName('Standard Items');
   data = NVSL.getRowsData(sheet).map(function (e){
     return e.itemId;
   });
   
   row = data.indexOf(itemId) >= 0 ? (data.indexOf(itemId) + 2) : "";
   return row;
+}
+
+
+
+function addToCart(itemId){
+  var test, cartId, item, data, cartSheet, range, cartItems, html;
+  
+  cartId = Number(PropertiesService.getScriptProperties().getProperty('nextCartId'));
+  cartSheet = SPLSS.getSheetByName('Cart');
+  
+  if(itemId){
+    item = getPurchaseItem(itemId);
+    item.qty = 1;
+    item.cartId = cartId
+    data = [item];
+    range = cartSheet.getRange(1,1,1,cartSheet.getLastColumn());
+    NVSL.setRowsData(cartSheet, data, range, cartSheet.getLastRow()+1);
+    PropertiesService.getScriptProperties().setProperty('nextCartId', cartId + 1);
+  }
+  
+  cartItems = NVSL.getRowsData(cartSheet);
+  
+  
+  html = HtmlService.createTemplateFromFile('purchase_cart');
+  html.data = cartItems;
+  return html.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).getContent();
+}
+
+
+
+function removeFromCart(cartId){
+  var test, id, sheet, recordRow, ss, cartItems, html;
+  
+  id = Number(cartId);
+  ss = SPLSS;
+  sheet = ss.getSheetByName('Cart')
+  recordRow = getCartRow(id, sheet);
+  sheet.deleteRow(recordRow);
+  
+  cartItems = NVSL.getRowsData(sheet);
+  
+  html = HtmlService.createTemplateFromFile('purchase_cart');
+  html.data = cartItems;
+  return html.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).getContent();
+}
+
+
+
+function getCartRow(cartId, sheet){
+  var test, ss, data, row;
+  
+  data = NVSL.getRowsData(sheet).map(function (e){
+    return e.cartId;
+  });
+  
+  row = data.indexOf(cartId) >= 0 ? (data.indexOf(cartId) + 2) : "";
+  return row;
+}
+
+
+
+function clearCart(){
+  var test, cartSheet, range;
+  
+  cartSheet = SPLSS.getSheetByName('Cart');
+  range = cartSheet.getRange(2,1,cartSheet.getLastRow(),cartSheet.getLastColumn());
+  range.clearContent();
+  PropertiesService.getScriptProperties().setProperty('nextCartId', 1);
+
+  return addToCart();
 }
 
 
