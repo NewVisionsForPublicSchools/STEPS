@@ -12,7 +12,8 @@
        </button>
       </div>
       <div class="btn-group pull-right">
-        <button class="btn btn-primary" id="createPOBtn" title="Create PO From Cart">
+        <button class="btn btn-primary" id="createPOBtn" data-toggle="modal" data-target="#editModal"
+        title="Create PO From Cart">
           <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
         </button>
       </div>
@@ -40,6 +41,59 @@
     </form>
   </ul>
 </div>
+
+<!-- Create PO Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+       
+       <form class="form-horizontal" method="get" id="editForm">
+         <div class="modal-header">
+           <h4>Purchase Details</h4>
+         </div> <!-- modal header -->
+         
+         <div class="modal-body">
+           <div class="form-group">
+             <label class="col-md-4 control-label">School</label>
+             <div class="col-md-3">
+               <select class="form-control" id="school">
+                 <option>AMS</option>
+                 <option>AMS 2</option>
+                 <option>AMS 3</option>
+                 <option>AMS 4</option>
+                 <option>HUM</option>
+                 <option>HUM 2</option>
+                 <option>HUM 3</option>
+                 <option>NVPS</option>
+               </select> <!-- dropdown -->
+             </div>
+           </div> <!-- form group -->
+           <div class="form-group">
+             <label class="col-md-4 control-label">Requested By</label>
+             <div class="col-md-6">
+               <input type="text" name="requested" class="form-control" placeholder="Requested By">
+             </div>
+           </div> <!-- form group -->
+           <div class="form-group">
+             <label class="col-md-4 control-label">Authorized By</label>
+             <div class="col-md-6">
+               <input type="text" name="authorized" class="form-control" placeholder="Authorized By">
+             </div>
+           </div> <!-- form group -->
+         </div> <!-- modal body -->
+         
+         <div class="modal-footer">
+           <div class="btn-group pull-right">
+            <button class="btn btn-primary" id="savePOBtn" title="Save PO Details">
+              <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+            </button>
+          </div>
+         </div> <!-- modal footer -->
+       </form>
+       
+    </div> <!-- modal content -->
+  </div> <!-- modal dialog -->
+</div> <!-- modal -->
 
 
 
