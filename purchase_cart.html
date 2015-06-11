@@ -32,6 +32,10 @@
         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></span>
         <h4 class="list-group-item-heading"><?= data[i].item ?></h4>
         <p class="list-group-item-heading">$<?= data[i].price.toFixed(2) ?></p>
+        <span class="pull-right"><button type="button" class="btn btn-primary" id="updateCartBtn" value="<?= data[i].cartId?>"
+        title="Update Item"
+        onclick="google.script.run.withSuccessHandler(updateCart).updateCartItem(this.value, $('#qty').val(), $('#purpose').val())">
+        <span class="glyphicon glyphicon-save" aria-hidden="true"></span></button></span>
         <div class="form-group">
           <label class="col-md-2">Qty.</label>
           <div class="col-md-3">
