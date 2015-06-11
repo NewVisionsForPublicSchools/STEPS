@@ -128,6 +128,7 @@ function seedStandardPurchaseList(){
   destSs = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty('splSsId'));
   destSheet = destSs.getSheetByName('Standard Items');
   range = destSheet.getRange(2,1,destSheet.getLastRow(),destSheet.getLastColumn());
+  PropertiesService.getScriptProperties().setProperty('nextItemId', 1);
 
   seeds = data.map(function (e){
     var x = {
@@ -137,6 +138,7 @@ function seedStandardPurchaseList(){
       vendor: e.vendor,
       partNo: e.vendorPartNumber,
       price: e.lastQuotedPrice,
+      glAccount: e.glAccount,
       notes: e.notes
     };
     return x;
@@ -153,6 +155,7 @@ function seedStandardPurchaseList(){
              vendor: formObj.vendor,
              partNumber: formObj.partNo,
              price: formObj.price,
+             glAccount: formObj.glAccount,
              notes: formObj.notes,
              itemId: nextId + i,
              lastUpdated: new Date()

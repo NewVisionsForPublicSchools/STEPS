@@ -10,6 +10,7 @@ function newPurchaseItem(formObj){
              vendor: formObj.itemVendor,
              partNumber: formObj.partNum,
              price: formObj.itemPrice.toFixed(2),
+             glAccount: formObj.glAccount,
              notes: formObj.itemNotes,
              itemId: PropertiesService.getScriptProperties().getProperty('nextItemId'),
              lastUpdated: new Date()
@@ -61,6 +62,7 @@ function editPurchaseItem(formObj){
     vendor: formObj.itemVendor,
     partNumber: formObj.partNum,
     price: formObj.itemPrice,
+    glAccount: formObj.glAccount,
     notes: formObj.itemNotes,
     lastUpdated: new Date()
   };

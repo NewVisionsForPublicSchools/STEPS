@@ -44,6 +44,11 @@
       </div>
       
       <div class="list-group-item">
+        <label>GL Account</label>
+        <p class="list-group-item-heading"><?= data.glAccount ?></p>
+      </div>
+      
+      <div class="list-group-item">
         <label>Notes</label>
         <p class="list-group-item-heading"><?= data.notes ?></p>
       </div>
@@ -126,7 +131,14 @@
              <label class="col-md-4 control-label">Price</label>
              <div class="col-md-8">
                <input type="text" name="itemPrice" class="form-control" placeholder="Price"
-               value="<?= data.price ?>">
+               value="<?= data.price.toFixed(2) ?>">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="col-md-4 control-label">GL Account</label>
+             <div class="col-md-8">
+               <input type="text" name="glAccount" class="form-control" placeholder="GL Account"
+               value="<?= data.glAccount ?>">
              </div>
            </div>
            <div class="form-group">
@@ -135,10 +147,9 @@
                <input type="text" name="itemNotes" class="form-control" placeholder="Notes"
                value="<?= data.notes ?>">
              </div>
+           </div>
            
          </div> <!-- modal body -->
-          
-       </div>
        
      </form>
      
