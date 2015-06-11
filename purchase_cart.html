@@ -12,9 +12,9 @@
        </button>
       </div>
       <div class="btn-group pull-right">
-        <button class="btn btn-primary" id="createPOBtn" data-toggle="modal" data-target="#orderModal"
+        <button class="btn btn-success" id="createPOBtn" data-toggle="modal" data-target="#orderModal"
         title="Create PO From Cart">
-          <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+          <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
         </button>
       </div>
      
@@ -35,7 +35,7 @@
         <span class="pull-right"><button type="button" class="btn btn-primary" id="updateCartBtn" value="<?= data[i].cartId?>"
         title="Update Item"
         onclick="google.script.run.withSuccessHandler(updateCart).updateCartItem(this.value, $('#qty').val(), $('#purpose').val())">
-        <span class="glyphicon glyphicon-save" aria-hidden="true"></span></button></span>
+        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button></span>
         <div class="form-group">
           <label class="col-md-2">Qty.</label>
           <div class="col-md-3">
@@ -66,9 +66,9 @@
          
          <div class="modal-body">
            <div class="form-group">
-             <label class="col-md-4 control-label">School</label>
+             <label class="col-md-4 control-label">Location</label>
              <div class="col-md-3">
-               <select class="form-control" id="school">
+               <select class="form-control" id="location">
                  <option>AMS</option>
                  <option>AMS 2</option>
                  <option>AMS 3</option>
