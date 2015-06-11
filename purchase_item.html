@@ -39,6 +39,7 @@
           <span class="pull-right"><button type="button" class="btn btn-primary" id="cartBtn" value="<?= data[i].itemId ?>"
           title="Add To Cart" onclick="google.script.run.withSuccessHandler(updateCart).addToCart(this.value)">
           <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></button></span>
+          <p><b>$<?= Number(data[i].price).toFixed(2) ?></b></p>
           <p class="list-group-item-text"><small><?= data[i].location ?></small></p>
           <br>
         </li>

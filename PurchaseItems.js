@@ -170,18 +170,18 @@ function removeFromCart(cartId){
 
 
 
-function updateCartItem(cartId, qty, purpose){
+function updateCartItem(formObj){
   var test, id, ss, sheet, recordRow, cartItems, html, range, headerRange, record;
-  
-  id = Number(cartId);
+  Logger.log(formObj);
+  id = Number(formObj.cartId);
   ss = SPLSS;
   sheet = ss.getSheetByName('Cart');
   recordRow = getCartRow(id, sheet);
   range = sheet.getRange(recordRow,1,1,sheet.getLastColumn());
   headerRange = sheet.getRange(1,1,1,sheet.getLastColumn());
   record = NVSL.getRowsData(sheet, range, 1);
-  record[0].qty = qty;
-  record[0].purpose = purpose;
+  record[0].qty = formObj.qty;
+  record[0].purpose = formObj.purpose;
   NVSL.setRowsData(sheet, record, headerRange, recordRow);
   
   cartItems = NVSL.getRowsData(sheet);

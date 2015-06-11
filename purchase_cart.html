@@ -23,34 +23,34 @@
      </h3>
     </div>
     
-    <form class="form-horizontal" id="cartForm">
     <? for(var i=0;i<data.length;i++){ ?>
-      <li class="list-group-item">
-        <input type="hidden" name="cartId" value="<?= data[i].cartId ?>">
-        <span class="pull-right"><button type="button" class="btn btn-danger" id="removeCartBtn" value="<?= data[i].cartId?>"
-        title="Remove From Cart" onclick="google.script.run.withSuccessHandler(updateCart).removeFromCart(this.value)">
-        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></span>
-        <h4 class="list-group-item-heading"><?= data[i].item ?></h4>
-        <p class="list-group-item-heading">$<?= data[i].price.toFixed(2) ?></p>
-        <span class="pull-right"><button type="button" class="btn btn-primary" id="updateCartBtn" value="<?= data[i].cartId?>"
-        title="Update Item"
-        onclick="google.script.run.withSuccessHandler(updateCart).updateCartItem(this.value, $('#qty').val(), $('#purpose').val())">
-        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button></span>
-        <div class="form-group">
-          <label class="col-md-2">Qty.</label>
-          <div class="col-md-3">
-            <input type="number" class="form-control qty" id="qty" name="qty" min="0" value="<?= data[i].qty ?>">
+      <form class="form-horizontal" id="cartForm">
+        <li class="list-group-item">
+          <input type="hidden" name="cartId" value="<?= data[i].cartId ?>">
+          <span class="pull-right"><button type="button" class="btn btn-danger" id="removeCartBtn" value="<?= data[i].cartId?>"
+          title="Remove From Cart" onclick="google.script.run.withSuccessHandler(updateCart).removeFromCart(this.value)">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></span>
+          <h4 class="list-group-item-heading"><?= data[i].item ?></h4>
+          <p class="list-group-item-heading">$<?= data[i].price.toFixed(2) ?></p>
+          <span class="pull-right"><button type="button" class="btn btn-primary" id="updateCartBtn" value="<?= data[i].cartId?>"
+          title="Update Item"
+          onclick="google.script.run.withSuccessHandler(updateCart).updateCartItem(this.form)">
+          <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button></span>
+          <div class="form-group">
+            <label class="col-md-2">Qty.</label>
+            <div class="col-md-3">
+              <input type="number" class="form-control qty" id="qty" name="qty" min="0" value="<?= data[i].qty ?>">
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="col-md-2">Purpose</label>
-          <div class="col-md-8">
-            <input type="text" class="form-control" id="purpose" name="purpose" value="<?= data[i].purpose ?>">
+          <div class="form-group">
+            <label class="col-md-2">Purpose</label>
+            <div class="col-md-8">
+              <input type="text" class="form-control" id="purpose" name="purpose" value="<?= data[i].purpose ?>">
+            </div>
           </div>
-        </div>
-      </li>
+        </li>
+      </form>
     <? } ?>
-    </form>
   </ul>
 </div>
 
@@ -59,7 +59,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
        
-       <form class="form-horizontal" method="get" id="editForm">
+       <form class="form-horizontal" method="get" id="orderForm">
          <div class="modal-header">
            <h4>Purchase Details</h4>
          </div> <!-- modal header -->
@@ -68,7 +68,7 @@
            <div class="form-group">
              <label class="col-md-4 control-label">Location</label>
              <div class="col-md-3">
-               <select class="form-control" id="location">
+               <select class="form-control" id="location" name="location">
                  <option>AMS</option>
                  <option>AMS 2</option>
                  <option>AMS 3</option>
@@ -102,7 +102,8 @@
          
          <div class="modal-footer">
            <div class="btn-group pull-right">
-            <button class="btn btn-primary" id="savePOBtn" title="Save PO Details">
+            <button class="btn btn-primary" id="savePOBtn" title="Save PO Details"
+            onclick="google.script.run.withSuccessHandler().createOrder(this.form)">
               <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
             </button>
           </div>
