@@ -25,9 +25,11 @@ function createOrder(formObj){
     order.orderId = dateString + "_" + order.location + "_" + user + "_" + number;
     order.vendor = vendors[i];
     NVSL.setRowsData(orderSheet, [order], orderSheetRange, orderSheet.getLastRow()+1);
+    addOrderItems(order.orderId, vendors[i]);
     number = (Number(number)+1).toString();
     PropertiesService.getScriptProperties().setProperty('nextOrderNumber', number);
   }
+  clearCart();
   debugger;
 }
 
@@ -43,6 +45,24 @@ function getOrderVendors(){
   });
   vendorList = NVGAS.unique(vendors);
   return vendorList;
+}
+
+
+
+function addOrderItems(orderId, vendor){
+  var test, cartSheet, orderItemsSheet, headerRange, orderItems, thisVendor;
+  
+  cartSheet = SPLSS.getSheetByName('Cart');
+  orderItemsSheet = SPLSS.getSheetByName('Order Items');
+  headerRange = orderItemsSheet.getRange(1,1,1,orderItemsSheet.getLastColumn());
+  orderItems = NVSL.getRowsData(cartSheet);
+  thisVendor = orderItems.filter(function(e){
+    return e.vendor == vendor;
+  }).map(function(e){
+    e.poNumber = orderId;
+    return e;
+  });
+  NVSL.setRowsData(orderItemsSheet, thisVendor, headerRange, orderItemsSheet.getLastRow()+1)
 }
 
 
