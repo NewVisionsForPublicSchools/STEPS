@@ -42,4 +42,20 @@
   function updatePurchaseList(resultHtml){   
     google.script.run.withSuccessHandler(loadSpi).getAllPurchaseItems()
   }
+  
+  function orderCreated(resultHtml){
+    $('#orderModal').modal('hide');
+    $('#confirmModal').modal('show');
+    var outputDiv = document.getElementById('test');
+    outputDiv.innerHTML = resultHtml; 
+  }
+  
+  function sleep(milliseconds) {
+      var start = new Date().getTime();
+      for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+          break;
+        }
+      }
+    }
 </script>

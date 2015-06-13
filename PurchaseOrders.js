@@ -3,11 +3,12 @@ var SPLSS = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getP
 
 
 function createOrder(formObj){
-  var test, orderSheet, orderSheetRange, vendors, order, dateString, user, number;
+  var test, orderSheet, orderSheetRange, orderHeaderRange, vendors, created, order, dateString, user, number, html;
   
   orderSheet = SPLSS.getSheetByName('Order Info');
   orderHeaderRange = orderSheet.getRange(1,1,1,orderSheet.getLastColumn());
   vendors = getOrderVendors();
+  created = [];
   
   for(i=0;i<vendors.length;i++){
     order = {
@@ -24,12 +25,17 @@ function createOrder(formObj){
     number = PropertiesService.getScriptProperties().getProperty('nextOrderNumber');
     order.orderId = dateString + "_" + order.location + "_" + user + "_" + number;
     order.vendor = vendors[i];
+    order.subtotal = addOrderItems(order.orderId, vendors[i]);
     NVSL.setRowsData(orderSheet, [order], orderSheetRange, orderSheet.getLastRow()+1);
-    addOrderItems(order.orderId, vendors[i]);
     number = (Number(number)+1).toString();
     PropertiesService.getScriptProperties().setProperty('nextOrderNumber', number);
+    created.push(order);
   }
   clearCart();
+  
+  html = HtmlService.createTemplateFromFile('confirm_order');
+  html.data = created;
+  return html.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).getContent();
   debugger;
 }
 
@@ -50,7 +56,7 @@ function getOrderVendors(){
 
 
 function addOrderItems(orderId, vendor){
-  var test, cartSheet, orderItemsSheet, headerRange, orderItems, thisVendor;
+  var test, cartSheet, orderItemsSheet, headerRange, orderItems, thisVendor, subtotal;
   
   cartSheet = SPLSS.getSheetByName('Cart');
   orderItemsSheet = SPLSS.getSheetByName('Order Items');
@@ -62,13 +68,26 @@ function addOrderItems(orderId, vendor){
     e.poNumber = orderId;
     return e;
   });
+  subtotal = thisVendor.map(function(e){
+    return e.price * e.qty;
+  }).reduce(function(a,b){
+    return  a + b;
+  });
   NVSL.setRowsData(orderItemsSheet, thisVendor, headerRange, orderItemsSheet.getLastRow()+1)
+  
+  return subtotal;
 }
 
 
 
 function resetOrderNumber(){  
   PropertiesService.getScriptProperties().setProperty('nextOrderNumber', '1');
+}
+
+
+
+function createOrderFile(orderId){
+  
 }
 
 

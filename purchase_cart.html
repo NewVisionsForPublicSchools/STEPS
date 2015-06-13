@@ -59,9 +59,10 @@
   <div class="modal-dialog">
     <div class="modal-content">
        
-       <form class="form-horizontal" method="none" id="orderForm">
+       <form class="form-horizontal" method="get" action="" onsubmit="return false" id="orderForm">
          <div class="modal-header">
            <h4>Purchase Details</h4>
+           <button class="hidden" id="orderSucces" data-toggle="modal" data-target="#confirmModal" value="hw"></button>
          </div> <!-- modal header -->
          
          <div class="modal-body">
@@ -103,13 +104,39 @@
          <div class="modal-footer">
            <div class="btn-group pull-right">
             <button class="btn btn-primary" id="savePOBtn" title="Save PO Details"
-            onclick="google.script.run.withSuccessHandler().createOrder(this.form)">
+            onclick="google.script.run.withSuccessHandler(orderCreated).createOrder(this.form)">
               <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
             </button>
           </div>
          </div> <!-- modal footer -->
        </form>
        
+    </div> <!-- modal content -->
+  </div> <!-- modal dialog -->
+</div> <!-- modal -->
+
+<!-- Order confirmation modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h4 class="text-primary">Created Order(s)</h4>
+      </div> <!-- modal header -->
+      
+      <div class="modal-body">
+        <div id="test"></div>
+      </div> <!-- modal body -->
+      
+      <div class="modal-footer">
+        <div class="btn-group pull-left">
+           <button class="btn btn-danger" data-dismiss="modal"
+           onclick="google.script.run.withSuccessHandler(updateCart).addToCart()">
+             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+           </button>
+         </div>
+      </div> <!-- modal footer -->
+      
     </div> <!-- modal content -->
   </div> <!-- modal dialog -->
 </div> <!-- modal -->
