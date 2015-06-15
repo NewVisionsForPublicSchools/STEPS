@@ -1,6 +1,10 @@
 <div>
   <? for(var i=0;i<data.length;i++){ ?>
     <li class="list-group-item">
+      <button class="btn btn-primary pull-right" name="printId" value="<?= data[i].orderId ?>" title="Create File"
+      onclick="google.script.run.withSuccessHandler().createOrderFile(this.value)">
+        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+      </button>
       <p><b><?= data[i].orderId ?></b></p>
       <p><?= data[i].vendor ?></p>
       <p>$<?= data[i].subtotal.toFixed(2) ?></p>

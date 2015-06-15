@@ -11,6 +11,7 @@ function createOrder(formObj){
   created = [];
   
   for(i=0;i<vendors.length;i++){
+    Utilities.sleep(1000);
     order = {
       location: formObj.location,
       requestedBy: formObj.requested,
@@ -87,20 +88,111 @@ function resetOrderNumber(){
 
 
 function createOrderFile(orderId){
+  var test, orderSheet, orders, orderInfo, location, template, filename, folder, file, fileId, url, ss, sheet,
+      poNumberRange, poDate, requested, authorized, vendor, itemsSheet, orderItems, headerRange;
   
+  orderSheet = SPLSS.getSheetByName('Order Info');
+  itemsSheet = SPLSS.getSheetByName('Order Items');
+  orders = NVSL.getRowsData(orderSheet);
+  orderInfo = orders.filter(function(e){
+    return e.orderId == orderId;
+  });
+  location = orderInfo[0].location;
+  template = getPoTemplate(location);
+  filename = orderId + "_" + orderInfo[0].vendor;
+  folder = DriveApp.getFolderById(PropertiesService.getScriptProperties().getProperty('purchaseOrderFolderId'));
+  file = template.makeCopy(filename, folder);
+  fileId = file.getId();
+  url = file.getUrl();
+  ss = SpreadsheetApp.openById(fileId);
+  sheet = ss.getSheetByName('Purchase Order');
+  poNumberRange = sheet.getRange(3,1,1,1);
+  poNumberRange.setValue(orderId);
+  poDate = sheet.getRange(5,1,1,1);
+  poDate.setValue(Utilities.formatDate(orderInfo[0].dateCreated, "GMT", "MM-dd-yyyy"));
+  requested = sheet.getRange(7,1,1,1);
+  requested.setValue(orderInfo[0].requestedBy);
+  authorized = sheet.getRange(9,1,1,1);
+  authorized.setValue(orderInfo[0].authorizedBy);
+  vendor = sheet.getRange(12,1,1,1);
+  vendor.setValue(orderInfo[0].vendor);
+  
+  orderItems = NVSL.getRowsData(itemsSheet).filter(function(e){
+    return e.poNumber == orderId;
+  }).map(function(e){
+    e.itemNoOrDescription = e.item;
+//    e.priceUnit = e.price;
+    e.totalPrice = e.qty * e.price;
+    return e;
+  });
+  
+  headerRange = sheet.getRange(20,1,1,7);
+  if(orderItems.length > 5){
+    sheet.insertRows(21, orderItems.length - 5);
+  }
+  NVSL.setRowsData(sheet, orderItems, headerRange, 21)
+
+  debugger;
+}
+
+
+
+function getPoTemplate(location){
+  var test, templateId, template;
+  
+  switch(location){
+    case 'AMS':
+      templateId = PropertiesService.getScriptProperties().getProperty('amsPoId');
+      break;
+    case 'AMS2':
+      templateId = PropertiesService.getScriptProperties().getProperty('ams2PoId');
+      break;
+    case 'AMS3':
+      templateId = PropertiesService.getScriptProperties().getProperty('ams3PoId');
+      break;
+    case 'AMS4':
+      templateId = PropertiesService.getScriptProperties().getProperty('ams4PoId');
+      break;
+    case 'HUM':
+      templateId = PropertiesService.getScriptProperties().getProperty('humPoId');
+      break;
+    case 'HUM2':
+      templateId = PropertiesService.getScriptProperties().getProperty('hum2PoId');
+      break;
+    case 'HUM3':
+      templateId = PropertiesService.getScriptProperties().getProperty('hum3PoId');
+      break;
+    case 'NVPS':
+      templateId = PropertiesService.getScriptProperties().getProperty('nvpsPoId');
+      break;
+    default:
+      templateId = "";
+  }
+  
+  template = DriveApp.getFileById(templateId);
+  return template;
 }
 
 
 
 function testOrder(){
-  var test, formObj;
+  var test, formObj, orderId;
   
-  formObj = {
-    location: 'NVPS',
-    requested: 'Joe',
-    authorized: 'Mike',
-    ticket: '123456'
-  };
+//  formObj = {
+//    location: 'NVPS',
+//    requested: 'Joe',
+//    authorized: 'Mike',
+//    ticket: '123456'
+//  };
   
-  createOrder(formObj);
+  orderId = '20150612_AMS_CB_67'
+  
+  createOrderFile(orderId);
+}
+
+function getHeader(){
+  var sheet = SpreadsheetApp.openById('1P9KsNA9dPP6d3rz_hdTd5hkPz57dOcqV-B5s7yv8L98').getSheetByName('Purchase Order');
+  var range = sheet.getRange(1,1,sheet.getLastRow(),sheet.getLastColumn());
+  var header = NVSL.getRowsData(sheet, range, 20);
+  debugger;
 }
