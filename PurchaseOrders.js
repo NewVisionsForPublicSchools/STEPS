@@ -3,7 +3,7 @@ var SPLSS = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getP
 
 
 function createOrder(formObj){
-  var test, orderSheet, orderSheetRange, orderHeaderRange, vendors, created, order, dateString, user, number, html;
+  var test, orderSheet, orderSheetRange, orderHeaderRange, vendors, created, order, dateString, user, number, html, inits;
   
   orderSheet = SPLSS.getSheetByName('Order Info');
   orderHeaderRange = orderSheet.getRange(1,1,1,orderSheet.getLastColumn());
@@ -22,11 +22,13 @@ function createOrder(formObj){
     
     dateString = order.dateCreated.getFullYear().toString() + ("0"+(order.dateCreated.getMonth() + 1)).slice(-2).toString()
     + ("0"+(order.dateCreated.getDate())).slice(-2).toString();
-    user = Session.getActiveUser().getEmail().slice(0,2).toUpperCase();
+    user = Session.getActiveUser().getEmail();
+    inits = user.slice(0,2).toUpperCase();
     number = PropertiesService.getScriptProperties().getProperty('nextOrderNumber');
-    order.orderId = dateString + "_" + order.location + "_" + user + "_" + number;
+    order.orderId = dateString + "_" + order.location + "_" + inits + "_" + number;
     order.vendor = vendors[i];
     order.subtotal = addOrderItems(order.orderId, vendors[i]);
+    order.createdBy = user;
     NVSL.setRowsData(orderSheet, [order], orderSheetRange, orderSheet.getLastRow()+1);
     number = (Number(number)+1).toString();
     PropertiesService.getScriptProperties().setProperty('nextOrderNumber', number);
@@ -89,7 +91,7 @@ function resetOrderNumber(){
 
 function createOrderFile(orderId){
   var test, orderSheet, orders, orderInfo, location, template, filename, folder, file, fileId, url, ss, sheet,
-      poNumberRange, poDate, requested, authorized, vendor, itemsSheet, orderItems, headerRange;
+      poNumberRange, poDate, requested, authorized, vendor, itemsSheet, orderItems, headerRange, orderIndex, fileRange;
   
   orderSheet = SPLSS.getSheetByName('Order Info');
   itemsSheet = SPLSS.getSheetByName('Order Items');
@@ -131,6 +133,14 @@ function createOrderFile(orderId){
     sheet.insertRows(21, orderItems.length - 5);
   }
   NVSL.setRowsData(sheet, orderItems, headerRange, 21)
+  
+  orderIndex = orders.map(function(e){
+    return e.orderId
+  }).indexOf(orderId) + 2;
+  fileRange = orderSheet.getRange(orderIndex, 8,1,1);
+  fileRange.setValue(url);
+  
+  sendOrderFile(orderId);
 
   debugger;
 }
@@ -175,6 +185,25 @@ function getPoTemplate(location){
 
 
 
+function sendOrderFile(orderId){
+  var test, orderSheet, orders, orderInfo, subject, body;
+  
+  orderSheet = SPLSS.getSheetByName('Order Info');
+  orders = NVSL.getRowsData(orderSheet);
+  orderInfo = orders.filter(function(e){
+    return e.orderId == orderId;
+  })[0];
+  
+  subject = "Purchase Order " + orderId + " has been created";
+  body = '<p>The following <a href="' + orderInfo.file + '">purchase order</a> has been created: </p>';
+  body.date = orderInfo;
+  
+  MailApp.sendEmail(orderInfo.createdBy, subject, "", {htmlBody: body})
+  debugger;
+}
+
+
+
 function testOrder(){
   var test, formObj, orderId;
   
@@ -185,9 +214,9 @@ function testOrder(){
 //    ticket: '123456'
 //  };
   
-  orderId = '20150612_AMS_CB_67'
+  orderId = '20150615_AMS3_CB_21'
   
-  createOrderFile(orderId);
+  sendOrderFile(orderId);
 }
 
 function getHeader(){
