@@ -70,7 +70,7 @@ function editPurchaseItem(formObj){
   itemId = Number(formObj.spiId);
   sheet = SPLSS.getSheetByName('Standard Items');
   headers = sheet.getRange(1,2,1,sheet.getLastColumn());
-  row = getItemRow(itemId);
+  row = getItemRow(itemId, sheet);
   objects = [item];
   
   if(row){
