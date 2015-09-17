@@ -8,7 +8,8 @@ function newPurchaseItem(formObj){
              location: formObj.itemLoc,
              vendor: formObj.itemVendor,
              partNumber: formObj.partNum,
-             price: formObj.itemPrice.toFixed(2),
+//             price: formObj.itemPrice.toFixed(2),
+             price: formObj.itemPrice,
              glAccount: formObj.glAccount,
              notes: formObj.itemNotes,
              itemId: PropertiesService.getScriptProperties().getProperty('nextItemId'),
@@ -69,7 +70,7 @@ function editPurchaseItem(formObj){
   itemId = Number(formObj.spiId);
   sheet = SPLSS.getSheetByName('Standard Items');
   headers = sheet.getRange(1,2,1,sheet.getLastColumn());
-  row = getItemRow(itemId);
+  row = getItemRow(itemId, sheet);
   objects = [item];
   
   if(row){
@@ -127,26 +128,44 @@ function getItemRow(itemId, sheet){
 
 
 function addToCart(itemId){
-  var test, cartId, item, data, cartSheet, range, cartItems, html;
+  var test, cartId, item, data, cartSheet, range, cartItems, cartIdList, newCartItems, row, cartItem, html;
   
   cartId = Number(PropertiesService.getScriptProperties().getProperty('nextCartId'));
   cartSheet = SPLSS.getSheetByName('Cart');
+  cartItems = NVSL.getRowsData(cartSheet);
+  cartIdList = cartItems.map(function(e){
+    return e.itemId;
+  });
   
   if(itemId){
-    item = getPurchaseItem(itemId);
-    item.qty = 1;
-    item.cartId = cartId
-    data = [item];
-    range = cartSheet.getRange(1,1,1,cartSheet.getLastColumn());
-    NVSL.setRowsData(cartSheet, data, range, cartSheet.getLastRow()+1);
-    PropertiesService.getScriptProperties().setProperty('nextCartId', cartId + 1);
+//    test = cartIdList.indexOf(Number(itemId));
+//    debugger;
+    
+    if(cartIdList.indexOf(Number(itemId)) < 0){
+      item = getPurchaseItem(itemId);
+      item.qty = 1;
+      item.cartId = cartId
+      data = [item];
+      range = cartSheet.getRange(1,1,1,cartSheet.getLastColumn());
+      NVSL.setRowsData(cartSheet, data, range, cartSheet.getLastRow()+1);
+      PropertiesService.getScriptProperties().setProperty('nextCartId', cartId + 1);
+    }
+    else{
+      row = cartIdList.indexOf(Number(itemId)) + 2;
+      cartItem = cartItems[cartIdList.indexOf(Number(itemId))];
+      cartItem.qty = cartItem.qty + 1;
+      data = [cartItem]
+      range = cartSheet.getRange(1,1,1,cartSheet.getLastColumn());
+      
+      NVSL.setRowsData(cartSheet, data, range, row);
+    }
   }
   
-  cartItems = NVSL.getRowsData(cartSheet);
+  newCartItems = NVSL.getRowsData(cartSheet);
   
   
   html = HtmlService.createTemplateFromFile('purchase_cart');
-  html.data = cartItems;
+  html.data = newCartItems;
   return html.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).getContent();
 }
 
