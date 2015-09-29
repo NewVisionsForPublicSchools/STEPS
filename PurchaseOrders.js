@@ -20,7 +20,7 @@ function createOrder(formObj){
       dateCreated: new Date()
     };
     
-    dateString = order.dateCreated.getFullYear().toString() + ("0"+(order.dateCreated.getMonth() + 1)).slice(-2).toString()
+    dateString = order.dateCreated.getFullYear().toString().substring(2) + ("0"+(order.dateCreated.getMonth() + 1)).slice(-2).toString()
     + ("0"+(order.dateCreated.getDate())).slice(-2).toString();
     user = Session.getActiveUser().getEmail();
     inits = user.slice(0,2).toUpperCase();
